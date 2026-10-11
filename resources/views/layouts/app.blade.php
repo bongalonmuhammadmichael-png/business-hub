@@ -37,11 +37,37 @@
             </nav>
 
             <div class="nav-actions">
-                <a href="#" class="login-link">Log in</a>
 
-                <a href="#" class="btn btn-primary nav-button">
-                    Get Started
-                </a>
+                @guest
+                    <a href="{{ route('login') }}" class="login-link">
+                        Log in
+                    </a>
+
+                    <a href="{{ route('register') }}" class="btn btn-primary nav-button">
+                        Get Started
+                    </a>
+                @endguest
+
+                @auth
+                    <span class="login-link">
+                        {{ auth()->user()->name }}
+                    </span>
+
+                    @if(auth()->user()->role === 'admin')
+                        <a href="{{ url('/admin') }}" class="btn btn-primary nav-button">
+                            Admin Dashboard
+                        </a>
+                    @endif
+
+                    <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                        @csrf
+
+                        <button type="submit" class="login-link" style="border: none; background: none; cursor: pointer;">
+                            Log out
+                        </button>
+                    </form>
+                @endauth
+
             </div>
 
         </div>

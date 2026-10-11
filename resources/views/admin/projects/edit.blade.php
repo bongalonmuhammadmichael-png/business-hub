@@ -1,0 +1,243 @@
+@extends('layouts.admin')
+
+@section('title', 'Edit Project | Business Hub')
+
+@section('page-heading', 'Edit Project')
+
+@section('content')
+
+<div class="container" style="padding: 50px 0; max-width: 900px;">
+
+    <div style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 35px;
+    ">
+
+        <div>
+            <h1 style="margin-bottom: 8px;">
+                Edit Project
+            </h1>
+
+            <p style="color: #64748b;">
+                Update this Business Hub project.
+            </p>
+        </div>
+
+        <a
+            href="{{ route('admin.projects.index') }}"
+            class="btn btn-primary"
+        >
+            ← Back to Projects
+        </a>
+
+    </div>
+
+
+    @if ($errors->any())
+
+        <div style="
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        ">
+
+            <strong>Please fix the following errors:</strong>
+
+            <ul style="margin-top: 10px;">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+
+        </div>
+
+    @endif
+
+
+    <div style="
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 35px;
+    ">
+
+        <form
+            method="POST"
+            action="{{ route('admin.projects.update', $project) }}"
+        >
+
+            @csrf
+            @method('PUT')
+
+
+            <div style="margin-bottom: 22px;">
+
+                <label for="name">
+                    Project Name
+                </label>
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value="{{ old('name', $project->name) }}"
+                    required
+                    style="
+                        width: 100%;
+                        padding: 13px;
+                        margin-top: 8px;
+                    "
+                >
+
+            </div>
+
+
+            <div style="margin-bottom: 22px;">
+
+                <label for="client">
+                    Client
+                </label>
+
+                <input
+                    type="text"
+                    id="client"
+                    name="client"
+                    value="{{ old('client', $project->client) }}"
+                    required
+                    style="
+                        width: 100%;
+                        padding: 13px;
+                        margin-top: 8px;
+                    "
+                >
+
+            </div>
+
+
+            <div style="margin-bottom: 22px;">
+
+                <label for="description">
+                    Description
+                </label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="5"
+                    style="
+                        width: 100%;
+                        padding: 13px;
+                        margin-top: 8px;
+                        resize: vertical;
+                    "
+                >{{ old('description', $project->description) }}</textarea>
+
+            </div>
+
+
+            <div style="margin-bottom: 22px;">
+
+                <label for="status">
+                    Status
+                </label>
+
+                <select
+                    id="status"
+                    name="status"
+                    required
+                    style="
+                        width: 100%;
+                        padding: 13px;
+                        margin-top: 8px;
+                    "
+                >
+
+                    <option
+                        value="planning"
+                        {{ old('status', $project->status) === 'planning' ? 'selected' : '' }}
+                    >
+                        Planning
+                    </option>
+
+                    <option
+                        value="in_progress"
+                        {{ old('status', $project->status) === 'in_progress' ? 'selected' : '' }}
+                    >
+                        In Progress
+                    </option>
+
+                    <option
+                        value="completed"
+                        {{ old('status', $project->status) === 'completed' ? 'selected' : '' }}
+                    >
+                        Completed
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div style="margin-bottom: 22px;">
+
+                <label for="start_date">
+                    Start Date
+                </label>
+
+                <input
+                    type="date"
+                    id="start_date"
+                    name="start_date"
+                    value="{{ old('start_date', $project->start_date?->format('Y-m-d')) }}"
+                    required
+                    style="
+                        width: 100%;
+                        padding: 13px;
+                        margin-top: 8px;
+                    "
+                >
+
+            </div>
+
+
+            <div style="margin-bottom: 30px;">
+
+                <label for="due_date">
+                    Due Date
+                </label>
+
+                <input
+                    type="date"
+                    id="due_date"
+                    name="due_date"
+                    value="{{ old('due_date', $project->due_date?->format('Y-m-d')) }}"
+                    required
+                    style="
+                        width: 100%;
+                        padding: 13px;
+                        margin-top: 8px;
+                    "
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+            >
+                Save Changes
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+@endsection
