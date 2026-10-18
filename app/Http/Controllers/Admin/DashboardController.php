@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\Project;
 use App\Models\User;
 
@@ -21,13 +22,18 @@ class DashboardController extends Controller
         $recentProjects = Project::latest()
             ->take(5)
             ->get();
+        
+        $recentActivity = ActivityLog::latest()
+            ->take(8)
+            ->get();
 
         return view('admin.dashboard', compact(
             'totalUsers',
             'totalEmployees',
             'totalProjects',
             'completedProjects',
-            'recentProjects'
+            'recentProjects',
+            'recentActivity'
         ));
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use App\Models\ActivityLog;
 
 class ProjectController extends Controller
 {
@@ -77,7 +78,19 @@ class ProjectController extends Controller
             'due_date' => ['required', 'date', 'after_or_equal:start_date'],
         ]);
 
-        Project::create($validated);
+        $project = Project::create($validated);
+
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'actor_name' => auth()->user()->name,
+            'action' => 'project.created',
+            'subject_type' => 'Project',
+            'subject_id' => $project->id,
+            'description' => 'Created project: ' . $project->name,
+            'metadata' => [
+                'status' => $project->status,
+            ],
+        ]);
 
         return redirect()
             ->route('admin.projects.index')
@@ -115,6 +128,19 @@ class ProjectController extends Controller
         ]);
 
         $project->update($validated);
+        
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'actor_name' => auth()->user()->name,
+            'action' => 'project.updated',
+            'subject_type' => 'Project',
+            'subject_id' => $project->id,
+            'description' => 'Updated project: ' . $project->name,
+            'metadata' => [
+                'status' => $project->status,
+            ],
+        ]);
+
 
         return redirect()
             ->route('admin.projects.index')
@@ -124,12 +150,32 @@ class ProjectController extends Controller
     /**
      * Delete a project.
      */
+    
     public function destroy(Project $project)
     {
+        // Preserve the project details before deletion
+        $projectName = $project->name;
+        $projectId = $project->id;
+
+        // Delete the project
         $project->delete();
+
+        // Record the deletion in the activity log
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'actor_name' => auth()->user()->name,
+            'action' => 'project.deleted',
+            'subject_type' => 'Project',
+            'subject_id' => $projectId,
+            'description' => 'Deleted project: ' . $projectName,
+            'metadata' => [
+                'project_name' => $projectName,
+            ],
+        ]);
 
         return redirect()
             ->route('admin.projects.index')
             ->with('success', 'Project deleted successfully.');
     }
+
 }

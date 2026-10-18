@@ -1381,3 +1381,132 @@ a {
     color: #172033;
 }
 
+
+/* Recent Activity — Business Hub Dashboard */
+.recent-activity-panel {
+    margin-top: 24px;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+}
+
+.recent-activity-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.recent-activity-header h2 {
+    margin: 0;
+    color: #111827;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.recent-activity-header p {
+    margin: 5px 0 0;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.recent-activity-count {
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #f3f4f6;
+    color: #4b5563;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.activity-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid #f0f1f4;
+}
+
+.activity-mark {
+    display: flex;
+    flex: 0 0 42px;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.activity-mark-project {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.activity-mark-user {
+    background: #ecfdf5;
+    color: #047857;
+}
+
+.activity-copy {
+    flex: 1;
+    min-width: 0;
+}
+
+.activity-description {
+    margin: 0;
+    color: #1f2937;
+    font-size: 14px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.activity-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin: 5px 0 0;
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.activity-type {
+    padding: 6px 9px;
+    border-radius: 8px;
+    background: #f9fafb;
+    color: #4b5563;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.activity-empty {
+    padding: 20px 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+@media (max-width: 700px) {
+    .recent-activity-panel {
+        padding: 18px;
+    }
+
+    .activity-row {
+        gap: 10px;
+    }
+
+    .activity-mark {
+        flex-basis: 36px;
+        width: 36px;
+        height: 36px;
+    }
+
+    .activity-type {
+        display: none;
+    }
+}

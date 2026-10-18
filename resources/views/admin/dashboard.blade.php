@@ -207,6 +207,49 @@
 
     </div>
 
+    <section class="recent-activity-panel">
+        <div class="recent-activity-header">
+            <div>
+                <h2>Recent Activity</h2>
+                <p>Latest actions across your workspace</p>
+            </div>
+
+            <span class="recent-activity-count">
+                {{ $recentActivity->count() }} events
+            </span>
+        </div>
+
+        @forelse ($recentActivity as $activity)
+            <div class="activity-row">
+                <div class="activity-mark {{ str_starts_with($activity->action, 'project.') ? 'activity-mark-project' : 'activity-mark-user' }}">
+                    {{ str_starts_with($activity->action, 'project.') ? 'P' : 'U' }}
+                </div>
+
+                <div class="activity-copy">
+                    <p class="activity-description">
+                        {{ $activity->description }}
+                    </p>
+
+                    <p class="activity-details">
+                        <span>{{ $activity->actor_name }}</span>
+                        <span aria-hidden="true">·</span>
+                        <time datetime="{{ $activity->created_at->toIso8601String() }}">
+                            {{ $activity->created_at->format('M d, Y · h:i A') }}
+                        </time>
+                    </p>
+                </div>
+
+                <span class="activity-type">
+                    {{ ucwords(str_replace('.', ' ', $activity->action)) }}
+                </span>
+            </div>
+        @empty
+            <p class="activity-empty">
+                No activity has been recorded yet.
+            </p>
+        @endforelse
+    </section>
+
 </div>
 
 @endsection

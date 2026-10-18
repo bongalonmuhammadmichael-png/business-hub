@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
+
 
 class UserController extends Controller
 {
@@ -49,7 +51,22 @@ class UserController extends Controller
             'role' => ['required', 'in:admin,employee'],
         ]);
 
-        User::create($validated);
+        
+        $user = User::create($validated);
+
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'actor_name' => auth()->user()->name,
+            'action' => 'user.created',
+            'subject_type' => 'User',
+            'subject_id' => $user->id,
+            'description' => 'Created user account: ' . $user->name,
+            'metadata' => [
+                'role' => $user->role,
+                'email' => $user->email,
+            ],
+        ]);
+
 
         return redirect()
             ->route('admin.users.index')
@@ -86,6 +103,20 @@ class UserController extends Controller
         }
 
         $user->update($validated);
+        
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'actor_name' => auth()->user()->name,
+            'action' => 'user.updated',
+            'subject_type' => 'User',
+            'subject_id' => $user->id,
+            'description' => 'Updated user account: ' . $user->name,
+            'metadata' => [
+                'role' => $user->role,
+                'email' => $user->email,
+            ],
+        ]);
+
 
         return redirect()
             ->route('admin.users.index')
@@ -95,18 +126,43 @@ class UserController extends Controller
     /**
      * Delete a user.
      */
+    
     public function destroy(User $user)
     {
+        // Prevent the administrator from deleting their own account
         if ($user->id === auth()->id()) {
             return redirect()
                 ->route('admin.users.index')
                 ->with('error', 'You cannot delete your own account.');
         }
 
+        // Preserve the account details before deletion
+        $userId = $user->id;
+        $userName = $user->name;
+        $userEmail = $user->email;
+        $userRole = $user->role;
+
+        // Delete the user account
         $user->delete();
+
+        // Record the deletion
+        ActivityLog::create([
+            'user_id' => auth()->id(),
+            'actor_name' => auth()->user()->name,
+            'action' => 'user.deleted',
+            'subject_type' => 'User',
+            'subject_id' => $userId,
+            'description' => 'Deleted user account: ' . $userName,
+            'metadata' => [
+                'name' => $userName,
+                'email' => $userEmail,
+                'role' => $userRole,
+            ],
+        ]);
 
         return redirect()
             ->route('admin.users.index')
             ->with('success', 'User deleted successfully.');
     }
+
 }
