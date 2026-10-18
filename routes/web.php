@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\UserController;
@@ -37,4 +38,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     
     Route::resource('/admin/projects', ProjectController::class)
         ->names('admin.projects');
+    
+    Route::get('/admin/activity-logs', [ActivityLogController::class, 'index'])
+    ->name('admin.activity-logs.index');
 });
+
