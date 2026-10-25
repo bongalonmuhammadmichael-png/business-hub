@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -41,5 +42,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     
     Route::get('/admin/activity-logs', [ActivityLogController::class, 'index'])
     ->name('admin.activity-logs.index');
+
+    Route::get('/admin/reports', [ReportController::class, 'index'])
+    ->name('admin.reports.index');
 });
 

@@ -78,11 +78,11 @@
 
             <nav class="admin-nav">
 
-                <div class="admin-nav-disabled">
+                <a href="{{ route('admin.reports.index') }}"
+                   class="{{ request()->routeIs('admin.reports.*') ? 'Reports' : '' }}">
                     <span class="admin-nav-icon">▧</span>
                     <span>Reports</span>
-                    <small>SOON</small>
-                </div>
+                </a>
 
                 <div class="admin-nav-disabled">
                     <span class="admin-nav-icon">⚙</span>
