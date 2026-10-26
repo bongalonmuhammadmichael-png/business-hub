@@ -2281,3 +2281,55 @@ a {
         min-height: auto;
     }
 }
+
+
+
+/* Reports CSV export button */
+.reports-header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.reports-export-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 44px;
+    padding: 0 16px;
+    border: 1px solid #1f2937;
+    border-radius: 10px;
+    background: #1f2937;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.reports-export-button:hover {
+    background: #374151;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.reports-export-button:focus-visible {
+    outline: 3px solid #93c5fd;
+    outline-offset: 3px;
+}
+
+@media (max-width: 700px) {
+    .reports-header-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .reports-export-button {
+        flex: 1;
+    }
+}

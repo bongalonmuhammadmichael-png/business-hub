@@ -55,4 +55,66 @@ class ReportController extends Controller
             'projects'
         ));
     }
+
+    
+    public function export()
+    {
+        $projects = Project::query()->latest()->get();
+
+        return response()->streamDownload(
+            function () use ($projects) {
+                $handle = fopen('php://output', 'w');
+
+                if ($handle === false) {
+                    return;
+                }
+
+                // Help Excel recognize UTF-8 text.
+                fwrite($handle, "\xEF\xBB\xBF");
+
+                fputcsv($handle, [
+                    'Project ID',
+                    'Project Name',
+                    'Client',
+                    'Description',
+                    'Status',
+                    'Start Date',
+                    'Due Date',
+                    'Created At',
+                ], ',', '"', '');
+
+                foreach ($projects as $project) {
+                    fputcsv($handle, [
+                        $project->id,
+                        $this->safeCsvValue($project->name),
+                        $this->safeCsvValue($project->client),
+                        $this->safeCsvValue($project->description),
+                        $project->status,
+                        $project->start_date?->format('Y-m-d') ?? '',
+                        $project->due_date?->format('Y-m-d') ?? '',
+                        $project->created_at?->format('Y-m-d H:i:s') ?? '',
+                    ], ',', '"', '');
+                }
+
+                fclose($handle);
+            },
+            'business-hub-project-report-' . now()->format('Y-m-d') . '.csv',
+            ['Content-Type' => 'text/csv; charset=UTF-8']
+        );
+    }
+
+    /**
+     * Reduce spreadsheet formula-injection risk in text fields.
+     */
+    private function safeCsvValue(?string $value): string
+    {
+        $value = (string) $value;
+
+        if (preg_match('/^[\t\r\n ]*[=+\-@]/', $value) === 1) {
+            return "'" . $value;
+        }
+
+        return $value;
+    }
+
 }
