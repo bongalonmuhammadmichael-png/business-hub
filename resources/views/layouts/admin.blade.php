@@ -84,11 +84,11 @@
                     <span>Reports</span>
                 </a>
 
-                <div class="admin-nav-disabled">
+                <a href="{{ route('admin.settings.index') }}"
+                   class="{{ request()->routeIs('admin.settings.*') ? 'Settings' : '' }}">
                     <span class="admin-nav-icon">⚙</span>
                     <span>Settings</span>
-                    <small>SOON</small>
-                </div>
+                </a>
 
             </nav>
 

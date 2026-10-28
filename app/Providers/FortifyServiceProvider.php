@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Actions\Fortify\CreateNewUser;
+use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Actions\Fortify\UpdateUserPassword;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
 
@@ -22,6 +24,14 @@ class FortifyServiceProvider extends ServiceProvider
         */
 
         Fortify::createUsersUsing(CreateNewUser::class);
+
+        Fortify::updateUserProfileInformationUsing(
+            UpdateUserProfileInformation::class
+        );
+
+        Fortify::updateUserPasswordsUsing(
+            UpdateUserPassword::class
+        );
 
         /*
         |--------------------------------------------------------------------------
